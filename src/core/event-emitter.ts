@@ -24,6 +24,11 @@ export class EventEmitter {
     };
   }
 
+  has(eventName: ViewerEventName): boolean {
+    const handlers = this.handlers.get(eventName);
+    return Boolean(handlers && handlers.size > 0);
+  }
+
   emit<T extends ViewerEventName>(
     eventName: T,
     payload: ViewerEventMap[T]

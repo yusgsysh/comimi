@@ -192,6 +192,16 @@ export class MangaViewerCore implements MangaViewerInstance {
         if (page) {
           this.events.emit("pageLoadError", { pageIndex, page });
         }
+      },
+      requestBack: () => {
+        this.events.emit("back", undefined);
+      },
+      requestFullscreen: () => {
+        if (this.events.has("fullscreenRequest")) {
+          this.events.emit("fullscreenRequest", undefined);
+        } else {
+          void this.setLayoutMode("browserFullscreen");
+        }
       }
     };
 
@@ -731,17 +741,15 @@ export class MangaViewerCore implements MangaViewerInstance {
             void this.setLayoutMode("inline");
           }
           break;
-        case "w":
-        case "W":
-          if (this.lockLayoutMode) break;
-          event.preventDefault();
-          void this.setLayoutMode("wide");
-          break;
         case "f":
         case "F":
           if (this.lockLayoutMode) break;
           event.preventDefault();
-          void this.setLayoutMode("browserFullscreen");
+          if (this.events.has("fullscreenRequest")) {
+            this.events.emit("fullscreenRequest", undefined);
+          } else {
+            void this.setLayoutMode("browserFullscreen");
+          }
           break;
         case "m":
         case "M": {

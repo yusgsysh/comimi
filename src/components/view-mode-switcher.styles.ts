@@ -2,8 +2,8 @@ export const viewModeSwitcherStyles = `
 .comimi-view-switcher {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 42px);
-  width: 126px;
+  grid-template-columns: repeat(2, 42px);
+  width: 84px;
   border-radius: 12px;
   background: var(--comimi-surface-2);
 }

@@ -467,7 +467,11 @@ export class MenuPanel {
       ),
       this.renderMenuLink("menu.openAbout", () =>
         this.callbacks.setPanel("about")
-      )
+      ),
+      this.renderMenuLink("menu.backToGallery", () => {
+        this.callbacks.setPanel("none");
+        this.callbacks.requestBack();
+      })
     );
 
     view.append(list);
@@ -526,7 +530,6 @@ export class MenuPanel {
           "shortcut.section.viewMode",
           [
             [["N", "Esc"], "layout.inline"],
-            [["W"], "layout.wide"],
             [["F"], "layout.browserFullscreen"]
           ],
           true

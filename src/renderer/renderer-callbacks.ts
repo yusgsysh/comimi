@@ -22,4 +22,11 @@ export interface RendererCallbacks {
   removeFavorite(pageIndex: number): void;
   /** ページ画像の読み込み失敗を通知する。 */
   reportPageLoadError(pageIndex: number): void;
+  /** メニューの「戻る」操作をアプリ側へ通知する。 */
+  requestBack(): void;
+  /**
+   * 全画面切替の要求。`fullscreenRequest` のリスナーがあればそちらへ委譲し、
+   * 無ければライブラリ内で `browserFullscreen` に切り替える。
+   */
+  requestFullscreen(): void;
 }

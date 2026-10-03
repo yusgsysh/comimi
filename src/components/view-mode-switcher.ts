@@ -36,7 +36,6 @@ export class ViewModeSwitcher {
 
     const modes: Array<[LayoutMode, string, IconName]> = [
       ["inline", "layout.inline", "default"],
-      ["wide", "layout.wide", "wide"],
       ["browserFullscreen", "layout.browserFullscreen", "fullscreen"]
     ];
 
@@ -47,7 +46,11 @@ export class ViewModeSwitcher {
       button.dataset.selected = "false";
       button.addEventListener("click", (event) => {
         event.stopPropagation();
-        this.callbacks.setLayoutMode(mode);
+        if (mode === "browserFullscreen") {
+          this.callbacks.requestFullscreen();
+        } else {
+          this.callbacks.setLayoutMode(mode);
+        }
       });
 
       const iconWrap = document.createElement("span");

@@ -267,6 +267,13 @@ export interface ViewerEventMap {
   /** ページ画像の取得・読み込みに失敗したとき。 */
   pageLoadError: { pageIndex: number; page: MangaPage };
   destroy: void;
+  /** メニューの「戻る」項目が押されたとき。 */
+  back: void;
+  /**
+   * 全画面の切替が要求されたとき。リスナーが無い場合はライブラリ内で
+   * `browserFullscreen` へ切り替える。
+   */
+  fullscreenRequest: void;
 }
 
 export type ViewerEventName = keyof ViewerEventMap;
