@@ -315,7 +315,7 @@ export const controlsDockStyles = `
 
 @media (hover: none) {
   .comimi-seek-preview {
-    display: none;
+    display: flex;
   }
 }
 

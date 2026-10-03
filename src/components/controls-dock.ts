@@ -225,13 +225,30 @@ export class ControlsDock {
     this.seekBar.addEventListener("mouseleave", () => {
       this.seekPreview.dataset.show = "false";
     });
+    // 触屏でもプレビューを出す。passive を付け、range input の操作を妨げない。
+    this.seekBar.addEventListener(
+      "touchstart",
+      (event) => this.updateSeekPreview(event),
+      { passive: true }
+    );
+    this.seekBar.addEventListener(
+      "touchmove",
+      (event) => this.updateSeekPreview(event),
+      { passive: true }
+    );
+    this.seekBar.addEventListener("touchend", () => {
+      this.seekPreview.dataset.show = "false";
+    });
+    this.seekBar.addEventListener("touchcancel", () => {
+      this.seekPreview.dataset.show = "false";
+    });
 
     this.seekBar.append(seekTrack, this.seekInput, this.seekPreview);
     wrap.append(textWrap, this.seekBar);
     return wrap;
   }
 
-  private updateSeekPreview(event: MouseEvent): void {
+  private updateSeekPreview(event: MouseEvent | TouchEvent): void {
     const state = this.currentState;
     if (!state) return;
     const total = state.manga.pages.length;
@@ -239,7 +256,15 @@ export class ControlsDock {
 
     const rect = this.seekBar.getBoundingClientRect();
     if (rect.width === 0) return;
-    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+    let clientX = (event as MouseEvent).clientX;
+    if (clientX === undefined) {
+      const touch =
+        (event as TouchEvent).touches[0] ??
+        (event as TouchEvent).changedTouches[0];
+      if (!touch) return;
+      clientX = touch.clientX;
+    }
+    const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
     const rawRatio = x / rect.width;
     const ratio =
       state.settings.readingDirection === "rtl" ? 1 - rawRatio : rawRatio;
