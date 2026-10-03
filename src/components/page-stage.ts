@@ -207,6 +207,22 @@ export class PageStage {
     const imageKey = `${state.manga.id}:${page.id}`;
     const cachedSource = this.imageSources.get(imageKey);
     if (cachedSource) {
+      // ソースが解決済みでも、デコードが終わるまではローディングを出す。
+      // これをしないとプリロード済みページへ移動した瞬間に白背景が見える。
+      const loading = renderLoadingIcon(
+        this.options.i18n,
+        this.options.loadingMascot
+      );
+      slot.append(loading);
+      img.style.visibility = "hidden";
+      img.addEventListener(
+        "load",
+        () => {
+          img.style.visibility = "";
+          loading.remove();
+        },
+        { once: true }
+      );
       img.src = cachedSource;
       return { slot, img };
     }
